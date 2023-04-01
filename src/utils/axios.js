@@ -5,16 +5,16 @@ import { Toast } from 'vant'
 import router from '../router'
 
 axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? '/api' : '//gold.cncpdd.com'
-// axios.defaults.baseURL = 'http://192.168.110.193:9999'
+// axios.defaults.baseURL = '/api'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token') || ''
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
-axios.interceptors.request.use(config=> {
+axios.interceptors.request.use(config => {
   return config;
-}, err=> {
-  Toast.fail({message: '请求超时!'});
+}, err => {
+  Toast.fail({ message: '请求超时!' });
   return Promise.resolve(err);
 })
 
@@ -30,19 +30,19 @@ axios.interceptors.response.use(res => {
     }
     Toast.fail(res.data.msg)
     // if (res.data.data && window.location.hash == '#/login') {
-      // setLocal('token', res.data.data)
-      // axios.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+    // setLocal('token', res.data.data)
+    // axios.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
     // }
-    
+
     return Promise.reject(res.data)
   }
 
   return res.data
-}, err=> {
+}, err => {
   // console.log(JSON.stringify(err))
   // if (!err.response.status){
-    Toast.fail({message: err.message})
-    // return Promise.resolve(err);
+  Toast.fail({ message: err.message })
+  // return Promise.resolve(err);
   // }
   // if (err.response.status == 504||err.response.status == 404) {
   //   Toast.fail({message: '服务器被吃了⊙﹏⊙∥'});
@@ -51,7 +51,7 @@ axios.interceptors.response.use(res => {
   // }else {
   //   Toast.fail({message: '未知错误!'});
   // }
-  return Promise.resolve(err);
+  return Promise.reject(err);
 })
 
 export default axios
